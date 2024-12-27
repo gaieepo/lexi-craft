@@ -4,4 +4,5 @@ export interface Subtitle {
     endTime: number
     text: string
     translation?: string
+    layer?: number
 }

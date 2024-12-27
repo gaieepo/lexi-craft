@@ -12,6 +12,7 @@ interface TranscriptionEditorProps {
     onSubtitleSelect: (subtitle: Subtitle | null) => void
     onSubtitlesChange: (subtitles: Subtitle[]) => void
     currentTime: number
+    activeLayer: number
 }
 
 export function TranscriptionEditor({
@@ -20,6 +21,7 @@ export function TranscriptionEditor({
     onSubtitleSelect,
     onSubtitlesChange,
     currentTime,
+    activeLayer,
 }: TranscriptionEditorProps) {
     return (
         <div className="flex h-full flex-col">
@@ -32,11 +34,10 @@ export function TranscriptionEditor({
                     onClick={() => {
                         const newSubtitle: Subtitle = {
                             id: Math.random().toString(36).substr(2, 9),
-                            startTime: 0,
-                            endTime: 2,
                             startTime: currentTime,
                             endTime: currentTime + 2,
                             text: 'New subtitle',
+                            layer: activeLayer,
                         }
                         onSubtitlesChange([...subtitles, newSubtitle])
                     }}
@@ -52,13 +53,14 @@ export function TranscriptionEditor({
                         <div
                             key={subtitle.id}
                             className={`rounded-lg border p-3 transition-colors ${selectedSubtitle?.id === subtitle.id
-                                    ? 'border-blue-500 bg-blue-500/10'
-                                    : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
+                                ? 'border-blue-500 bg-blue-500/10'
+                                : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
                                 }`}
                             onClick={() => onSubtitleSelect(subtitle)}
                         >
-                            <div className="mb-2 text-sm text-zinc-400">
-                                {formatTime(subtitle.startTime)} → {formatTime(subtitle.endTime)}
+                            <div className="mb-2 flex justify-between text-sm text-zinc-400">
+                                <span>{formatTime(subtitle.startTime)} → {formatTime(subtitle.endTime)}</span>
+                                <span>Layer {(subtitle.layer ?? 0) + 1}</span>
                             </div>
                             <Textarea
                                 value={subtitle.text}

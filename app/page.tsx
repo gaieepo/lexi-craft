@@ -11,6 +11,7 @@ export default function SubtitleEditor() {
   const [duration, setDuration] = useState(0)
   const [subtitles, setSubtitles] = useState<Subtitle[]>([])
   const [selectedSubtitle, setSelectedSubtitle] = useState<Subtitle | null>(null)
+  const [activeLayer, setActiveLayer] = useState(0)
 
   return (
     <div className="flex h-screen flex-col bg-zinc-900">
@@ -20,7 +21,7 @@ export default function SubtitleEditor() {
           {/* Left side: Video Player */}
           <div className="w-[50%] bg-zinc-800 p-4">
             <VideoPlayer
-              src="demo.mp4"
+              src="/videos/demo.mp4"
               currentTime={currentTime}
               onTimeUpdate={setCurrentTime}
               onDurationChange={setDuration}
@@ -36,6 +37,7 @@ export default function SubtitleEditor() {
               onSubtitleSelect={setSelectedSubtitle}
               onSubtitlesChange={setSubtitles}
               currentTime={currentTime}
+              activeLayer={activeLayer}
             />
           </div>
         </div>
@@ -50,6 +52,8 @@ export default function SubtitleEditor() {
             onSubtitlesChange={setSubtitles}
             duration={duration}
             onTimeUpdate={setCurrentTime}
+            activeLayer={activeLayer}
+            onActiveLayerChange={setActiveLayer}
           />
         </div>
       </main>
