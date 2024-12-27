@@ -11,6 +11,7 @@ interface TranscriptionEditorProps {
     selectedSubtitle: Subtitle | null
     onSubtitleSelect: (subtitle: Subtitle | null) => void
     onSubtitlesChange: (subtitles: Subtitle[]) => void
+    currentTime: number
 }
 
 export function TranscriptionEditor({
@@ -18,6 +19,7 @@ export function TranscriptionEditor({
     selectedSubtitle,
     onSubtitleSelect,
     onSubtitlesChange,
+    currentTime,
 }: TranscriptionEditorProps) {
     return (
         <div className="flex h-full flex-col">
@@ -32,6 +34,8 @@ export function TranscriptionEditor({
                             id: Math.random().toString(36).substr(2, 9),
                             startTime: 0,
                             endTime: 2,
+                            startTime: currentTime,
+                            endTime: currentTime + 2,
                             text: 'New subtitle',
                         }
                         onSubtitlesChange([...subtitles, newSubtitle])
@@ -48,8 +52,8 @@ export function TranscriptionEditor({
                         <div
                             key={subtitle.id}
                             className={`rounded-lg border p-3 transition-colors ${selectedSubtitle?.id === subtitle.id
-                                ? 'border-blue-500 bg-blue-500/10'
-                                : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
+                                    ? 'border-blue-500 bg-blue-500/10'
+                                    : 'border-zinc-700 bg-zinc-800/50 hover:border-zinc-600'
                                 }`}
                             onClick={() => onSubtitleSelect(subtitle)}
                         >

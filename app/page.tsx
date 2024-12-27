@@ -8,6 +8,7 @@ import { type Subtitle } from '@/types/subtitle'
 
 export default function SubtitleEditor() {
   const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
   const [subtitles, setSubtitles] = useState<Subtitle[]>([])
   const [selectedSubtitle, setSelectedSubtitle] = useState<Subtitle | null>(null)
 
@@ -22,6 +23,7 @@ export default function SubtitleEditor() {
               src="demo.mp4"
               currentTime={currentTime}
               onTimeUpdate={setCurrentTime}
+              onDurationChange={setDuration}
               subtitles={subtitles}
             />
           </div>
@@ -33,6 +35,7 @@ export default function SubtitleEditor() {
               selectedSubtitle={selectedSubtitle}
               onSubtitleSelect={setSelectedSubtitle}
               onSubtitlesChange={setSubtitles}
+              currentTime={currentTime}
             />
           </div>
         </div>
@@ -45,6 +48,8 @@ export default function SubtitleEditor() {
             selectedSubtitle={selectedSubtitle}
             onSubtitleSelect={setSelectedSubtitle}
             onSubtitlesChange={setSubtitles}
+            duration={duration}
+            onTimeUpdate={setCurrentTime}
           />
         </div>
       </main>

@@ -1,8 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Slider } from '@/components/ui/slider'
-import { FastForward, Pause, Play, Rewind, Volume2 } from 'lucide-react'
+import { FastForward, Pause, Play, Rewind } from 'lucide-react'
 import { useRef, useEffect, useState } from 'react'
 import { type Subtitle } from '@/types/subtitle'
 
@@ -10,10 +9,11 @@ interface VideoPlayerProps {
     src: string
     currentTime: number
     onTimeUpdate: (time: number) => void
+    onDurationChange: (duration: number) => void
     subtitles: Subtitle[]
 }
 
-export function VideoPlayer({ src, currentTime, onTimeUpdate, subtitles }: VideoPlayerProps) {
+export function VideoPlayer({ src, currentTime, onTimeUpdate, onDurationChange, subtitles }: VideoPlayerProps) {
     const videoRef = useRef<HTMLVideoElement>(null)
     const [isPlaying, setIsPlaying] = useState(false)
 
@@ -34,6 +34,7 @@ export function VideoPlayer({ src, currentTime, onTimeUpdate, subtitles }: Video
                 src={src}
                 className="h-full w-full"
                 onTimeUpdate={e => onTimeUpdate(e.currentTarget.currentTime)}
+                onLoadedMetadata={e => onDurationChange(e.currentTarget.duration)}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
             />
@@ -45,62 +46,46 @@ export function VideoPlayer({ src, currentTime, onTimeUpdate, subtitles }: Video
                     </div>
                 )}
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-4">
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-white hover:bg-white/20"
+                        className="h-10 w-10 text-white hover:bg-white/20"
                         onClick={() => {
                             if (videoRef.current) {
                                 videoRef.current.currentTime -= 5
                             }
                         }}
                     >
-                        <Rewind className="h-4 w-4" />
+                        <Rewind className="h-6 w-6" />
                     </Button>
 
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-white hover:bg-white/20"
+                        className="h-12 w-12 text-white hover:bg-white/20"
                         onClick={() => {
                             isPlaying ? videoRef.current?.pause() : videoRef.current?.play()
                         }}
                     >
                         {isPlaying ? (
-                            <Pause className="h-4 w-4" />
+                            <Pause className="h-8 w-8" />
                         ) : (
-                            <Play className="h-4 w-4" />
+                            <Play className="h-8 w-8" />
                         )}
                     </Button>
 
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-white hover:bg-white/20"
+                        className="h-10 w-10 text-white hover:bg-white/20"
                         onClick={() => {
                             if (videoRef.current) {
                                 videoRef.current.currentTime += 5
                             }
                         }}
                     >
-                        <FastForward className="h-4 w-4" />
-                    </Button>
-
-                    <Slider
-                        className="w-full"
-                        value={[currentTime]}
-                        max={videoRef.current?.duration || 100}
-                        step={0.1}
-                        onValueChange={([value]) => onTimeUpdate(value)}
-                    />
-
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-white hover:bg-white/20"
-                    >
-                        <Volume2 className="h-4 w-4" />
+                        <FastForward className="h-6 w-6" />
                     </Button>
                 </div>
             </div>
